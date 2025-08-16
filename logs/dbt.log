@@ -1,0 +1,53 @@
+[0m11:44:41.016672 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1101202f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111f23ed0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111f239d0>]}
+
+
+============================== 11:44:41.040142 | bc8fe687-492b-4c22-a914-de1ed0ced2fb ==============================
+[0m11:44:41.040142 [info ] [MainThread]: Running with dbt=1.10.9
+[0m11:44:41.040489 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'log_format': 'default', 'warn_error': 'None', 'quiet': 'False', 'log_path': 'logs', 'version_check': 'True', 'write_json': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'invocation_command': 'dbt init my_dbt_project', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'introspect': 'True', 'fail_fast': 'False', 'static_parser': 'True', 'cache_selected_only': 'False', 'send_anonymous_usage_stats': 'True', 'target_path': 'None', 'empty': 'None', 'profiles_dir': '/Users/kenjinakagaki/.dbt', 'debug': 'False', 'partial_parse': 'True', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'use_colors': 'True'}
+[0m11:44:41.072555 [info ] [MainThread]: Creating dbt configuration folder at /Users/kenjinakagaki/.dbt
+[0m11:44:41.073603 [debug] [MainThread]: Starter project path: /Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/dbt/include/starter_project
+[0m11:44:41.076499 [info ] [MainThread]: 
+Your new dbt project "my_dbt_project" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m11:44:41.076665 [info ] [MainThread]: Setting up your profile.
+[0m11:44:41.076974 [error] [MainThread]: Encountered an error:
+
+[0m11:44:41.078047 [error] [MainThread]: Traceback (most recent call last):
+  File "/Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/dbt/cli/requires.py", line 178, in wrapper
+    result, success = func(*args, **kwargs)
+                      ~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/dbt/cli/requires.py", line 128, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/dbt/cli/main.py", line 483, in init
+    results = task.run()
+  File "/Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/dbt/task/init.py", line 346, in run
+    self.setup_profile(profile_name)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/dbt/task/init.py", line 261, in setup_profile
+    adapter = self.ask_for_adapter_choice()
+  File "/Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/dbt/task/init.py", line 242, in ask_for_adapter_choice
+    numeric_choice = click.prompt(prompt_msg, type=click.INT)
+  File "/Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/click/termui.py", line 168, in prompt
+    value = prompt_func(prompt)
+  File "/Users/kenjinakagaki/git/claude-dbt-project/claude-dbt-project/.venv/lib/python3.13/site-packages/click/termui.py", line 151, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m11:44:41.258331 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": false, "command_wall_clock_time": 0.29343086, "process_in_blocks": "0", "process_kernel_time": 0.301429, "process_mem_max_rss": "143785984", "process_out_blocks": "0", "process_user_time": 1.851682}
+[0m11:44:41.259199 [debug] [MainThread]: Command `dbt init` failed at 11:44:41.259050 after 0.29 seconds
+[0m11:44:41.259696 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111fea9e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111fc5c70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111d2d7b0>]}
+[0m11:44:41.260191 [debug] [MainThread]: Flushing usage events
+[0m11:44:42.123719 [debug] [MainThread]: An error was encountered while trying to flush usage events
