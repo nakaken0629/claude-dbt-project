@@ -4,56 +4,66 @@
 
 ## 📖 ドキュメント構成
 
-### 🎯 [プロジェクト概要](./project-overview.md)
-- プロジェクトの目的と背景
-- 技術スタックと構成
-- データソースの説明
-- 開発フローと品質保証
+### 🎯 基本設計 (`basic-design/`)
+プロジェクトの要件定義と全体アーキテクチャレベルの設計文書
 
-### 🏗️ [データモデリング設計](./data-modeling-design.md)
-- レイヤードアーキテクチャ設計
-- データソース分析と品質課題
-- 提案データモデル構造
-- パフォーマンス考慮事項
+- **[プロジェクト概要](./basic-design/project-overview.md)**
+  - プロジェクトの目的と背景
+  - 技術スタックと構成
+  - データソースの説明
+  - 開発フローと品質保証
 
-### 📋 [dbtベストプラクティス](./dbt-best-practices.md)
-- プロジェクト構造とファイル組織
-- SQLスタイルガイド
-- モデル設計原則
-- マクロの活用方法
+- **[データモデリング設計](./basic-design/data-modeling-design.md)**
+  - レイヤードアーキテクチャ設計
+  - データソース分析と品質課題
+  - 提案データモデル構造
+  - パフォーマンス考慮事項
 
-### 🧪 [テスト戦略](./testing-strategy.md)
-- 包括的なテストレベル定義
-- dbt標準テストとカスタムテスト
-- テスト実行戦略
-- パフォーマンステストとモニタリング
+- **[生データスキーマ設計書](./basic-design/raw-data-schema.md)**
+  - 自動販売機事業の全データソース定義
+  - マスタデータとトランザクションデータの詳細スキーマ
+  - mermaid形式のER図による関係性明示
+  - データ品質考慮事項
 
-### ⚙️ [運用・メンテナンス](./operations-maintenance.md)
-- 日次・週次・月次の運用手順
-- 監視とアラート設定
-- トラブルシューティングガイド
-- バックアップと災害復旧計画
+### 🔧 詳細設計 (`detailed-design/`)
+実装方針と開発手法レベルの設計文書
 
-### 🚀 [開発環境セットアップ](./development-environment.md)
-- 環境構築手順
-- DuckDBの設定と使用方法
-- 基本的なdbtコマンド
-- トラブルシューティング
+- **[dbtベストプラクティス](./detailed-design/dbt-best-practices.md)**
+  - プロジェクト構造とファイル組織
+  - SQLスタイルガイド
+  - モデル設計原則
+  - マクロの活用方法
+
+- **[テスト戦略](./detailed-design/testing-strategy.md)**
+  - 包括的なテストレベル定義
+  - dbt標準テストとカスタムテスト
+  - テスト実行戦略
+  - パフォーマンステストとモニタリング
+
+### ⚙️ 運用設計 (`operational-design/`)
+環境構築と保守運用レベルの設計文書
+
+- **[運用・メンテナンス](./operational-design/operations-maintenance.md)**
+  - 日次・週次・月次の運用手順
+  - 監視とアラート設定
+  - トラブルシューティングガイド
+  - バックアップと災害復旧計画
 
 ## 📚 ドキュメント利用ガイド
 
-### 🔰 初回セットアップ時
-1. [開発環境セットアップ](./development-environment.md)
-2. [プロジェクト概要](./project-overview.md)
+### 🔰 初回プロジェクト理解時
+1. [プロジェクト概要](./basic-design/project-overview.md)
+2. [生データスキーマ設計書](./basic-design/raw-data-schema.md)
+3. [データモデリング設計](./basic-design/data-modeling-design.md)
 
-### 📝 開発時の参照
-1. [データモデリング設計](./data-modeling-design.md)
-2. [dbtベストプラクティス](./dbt-best-practices.md)
-3. [テスト戦略](./testing-strategy.md)
+### 📝 開発・実装時
+1. [dbtベストプラクティス](./detailed-design/dbt-best-practices.md)
+2. [テスト戦略](./detailed-design/testing-strategy.md)
+3. [データモデリング設計](./basic-design/data-modeling-design.md)
 
 ### 🔧 運用・保守時
-1. [運用・メンテナンス](./operations-maintenance.md)
-2. [テスト戦略](./testing-strategy.md)
+1. [運用・メンテナンス](./operational-design/operations-maintenance.md)
+2. [テスト戦略](./detailed-design/testing-strategy.md)
 
 ## 🔄 ドキュメント更新方針
 
