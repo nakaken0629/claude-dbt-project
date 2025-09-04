@@ -1,0 +1,57 @@
+テーブル名,テーブル種別,物理列名,データ型,NULL許可,制約,デフォルト値,説明
+mst_vending_machine,マスタ,vending_machine_id,VARCHAR,NOT NULL,PRIMARY KEY,-,自動販売機ID
+mst_vending_machine,マスタ,location_name,VARCHAR,NOT NULL,-,-,設置場所
+mst_vending_machine,マスタ,installation_date,DATE,NOT NULL,-,-,設置日
+mst_vending_machine,マスタ,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+mst_vending_machine,マスタ,updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時
+mst_product_category,マスタ,product_category_id,VARCHAR,NOT NULL,PRIMARY KEY,-,商品カテゴリID
+mst_product_category,マスタ,category_name,VARCHAR,NOT NULL,UNIQUE,-,カテゴリ名
+mst_product_category,マスタ,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+mst_product_category,マスタ,updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時
+mst_product,マスタ,product_id,VARCHAR,NOT NULL,PRIMARY KEY,-,商品ID
+mst_product,マスタ,product_category_id,VARCHAR,NOT NULL,FOREIGN KEY,-,商品カテゴリID
+mst_product,マスタ,product_name,VARCHAR,NOT NULL,-,-,商品名
+mst_product,マスタ,price,DECIMAL(10,0),NOT NULL,"CHECK (price >= 0)",-,販売価格（円）
+mst_product,マスタ,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+mst_product,マスタ,updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時
+mst_staff,マスタ,staff_id,VARCHAR,NOT NULL,PRIMARY KEY,-,担当者ID
+mst_staff,マスタ,staff_name,VARCHAR,NOT NULL,-,-,担当者名
+mst_staff,マスタ,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+mst_staff,マスタ,updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時
+mst_payment_method,マスタ,payment_method_id,VARCHAR,NOT NULL,PRIMARY KEY,-,決済方法ID
+mst_payment_method,マスタ,payment_method_name,VARCHAR,NOT NULL,UNIQUE,-,決済方法名
+mst_payment_method,マスタ,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+mst_payment_method,マスタ,updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時
+fact_sales,ファクト,sales_id,BIGINT,NOT NULL,PRIMARY KEY,-,売上ID（サロゲートキー）
+fact_sales,ファクト,vending_machine_id,VARCHAR,NOT NULL,FOREIGN KEY,-,自動販売機ID
+fact_sales,ファクト,product_id,VARCHAR,NOT NULL,FOREIGN KEY,-,商品ID
+fact_sales,ファクト,purchase_datetime,TIMESTAMP,NOT NULL,-,-,購入日時
+fact_sales,ファクト,payment_method_id,VARCHAR,NOT NULL,FOREIGN KEY,-,決済方法ID
+fact_sales,ファクト,input_amount,DECIMAL(10,0),NOT NULL,"CHECK (input_amount >= 0)",-,投入金額（円）
+fact_sales,ファクト,change_amount,DECIMAL(10,0),NOT NULL,"CHECK (change_amount >= 0)",-,お釣り金額（円）
+fact_sales,ファクト,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+fact_replenishment,ファクト,replenishment_id,BIGINT,NOT NULL,PRIMARY KEY,-,補充ID（サロゲートキー）
+fact_replenishment,ファクト,vending_machine_id,VARCHAR,NOT NULL,FOREIGN KEY,-,自動販売機ID
+fact_replenishment,ファクト,product_id,VARCHAR,NOT NULL,FOREIGN KEY,-,商品ID
+fact_replenishment,ファクト,replenishment_datetime,TIMESTAMP,NOT NULL,-,-,補充日時
+fact_replenishment,ファクト,replenishment_quantity,INTEGER,NOT NULL,"CHECK (replenishment_quantity > 0)",-,補充数量
+fact_replenishment,ファクト,stock_before,INTEGER,NULL,"CHECK (stock_before >= 0)",-,補充前在庫数
+fact_replenishment,ファクト,stock_after,INTEGER,NULL,"CHECK (stock_after >= 0)",-,補充後在庫数
+fact_replenishment,ファクト,staff_id,VARCHAR,NULL,FOREIGN KEY,-,補充担当者ID
+fact_replenishment,ファクト,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+log_data_quality,ログ,log_id,BIGINT,NOT NULL,PRIMARY KEY,-,ログID
+log_data_quality,ログ,table_name,VARCHAR,NOT NULL,-,-,テーブル名
+log_data_quality,ログ,column_name,VARCHAR,NULL,-,-,カラム名
+log_data_quality,ログ,error_type,VARCHAR,NOT NULL,-,-,エラー種別
+log_data_quality,ログ,error_level,VARCHAR,NOT NULL,"CHECK (error_level IN ('FATAL', 'ERROR', 'WARNING', 'INFO'))",-,エラーレベル
+log_data_quality,ログ,error_message,VARCHAR,NOT NULL,-,-,エラーメッセージ
+log_data_quality,ログ,source_data,VARCHAR,NULL,-,-,ソースデータ
+log_data_quality,ログ,record_count,INTEGER,NULL,-,-,レコード件数
+log_data_quality,ログ,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+mst_data_quality_metrics,マスタ,metric_id,VARCHAR,NOT NULL,PRIMARY KEY,-,メトリクスID
+mst_data_quality_metrics,マスタ,table_name,VARCHAR,NOT NULL,-,-,テーブル名
+mst_data_quality_metrics,マスタ,metric_name,VARCHAR,NOT NULL,-,-,メトリクス名
+mst_data_quality_metrics,マスタ,metric_description,VARCHAR,NULL,-,-,メトリクス説明
+mst_data_quality_metrics,マスタ,threshold_value,DECIMAL(10,4),NULL,-,-,閾値
+mst_data_quality_metrics,マスタ,created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+mst_data_quality_metrics,マスタ,updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時
