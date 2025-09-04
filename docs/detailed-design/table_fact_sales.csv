@@ -1,0 +1,9 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+sales_id,BIGINT,NOT NULL,PRIMARY KEY,-,売上ID（サロゲートキー）
+vending_machine_id,VARCHAR,NOT NULL,FOREIGN KEY,-,自動販売機ID
+product_id,VARCHAR,NOT NULL,FOREIGN KEY,-,商品ID
+purchase_datetime,TIMESTAMP,NOT NULL,-,-,購入日時
+payment_method_id,VARCHAR,NOT NULL,FOREIGN KEY,-,決済方法ID
+input_amount,DECIMAL(10,0),NOT NULL,"CHECK (input_amount >= 0)",-,投入金額（円）
+change_amount,DECIMAL(10,0),NOT NULL,"CHECK (change_amount >= 0)",-,お釣り金額（円）
+created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時

@@ -1,0 +1,7 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+product_id,VARCHAR,NOT NULL,PRIMARY KEY,-,商品ID
+product_category_id,VARCHAR,NOT NULL,FOREIGN KEY,-,商品カテゴリID
+product_name,VARCHAR,NOT NULL,-,-,商品名
+price,DECIMAL(10,0),NOT NULL,"CHECK (price >= 0)",-,販売価格（円）
+created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時

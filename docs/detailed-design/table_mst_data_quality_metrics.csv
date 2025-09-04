@@ -1,0 +1,8 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+metric_id,VARCHAR,NOT NULL,PRIMARY KEY,-,メトリクスID
+table_name,VARCHAR,NOT NULL,-,-,テーブル名
+metric_name,VARCHAR,NOT NULL,-,-,メトリクス名
+metric_description,VARCHAR,NULL,-,-,メトリクス説明
+threshold_value,DECIMAL(10,4),NULL,-,-,閾値
+created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時

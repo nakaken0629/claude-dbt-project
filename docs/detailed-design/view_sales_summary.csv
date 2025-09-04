@@ -1,0 +1,11 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+vending_machine_id,VARCHAR,NOT NULL,-,-,自動販売機ID
+location_name,VARCHAR,NOT NULL,-,-,設置場所名
+product_name,VARCHAR,NOT NULL,-,-,商品名
+category_name,VARCHAR,NOT NULL,-,-,カテゴリ名
+payment_method_name,VARCHAR,NOT NULL,-,-,決済方法名
+purchase_date,DATE,NOT NULL,-,-,購入日
+sales_count,BIGINT,NOT NULL,-,-,売上件数
+total_sales_amount,DECIMAL(12,0),NOT NULL,-,-,売上金額合計
+total_input_amount,DECIMAL(12,0),NOT NULL,-,-,投入金額合計
+total_change_amount,DECIMAL(12,0),NOT NULL,-,-,お釣り金額合計

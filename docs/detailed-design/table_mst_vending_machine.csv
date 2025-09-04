@@ -1,0 +1,6 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+vending_machine_id,VARCHAR,NOT NULL,PRIMARY KEY,-,自動販売機ID
+location_name,VARCHAR,NOT NULL,-,-,設置場所
+installation_date,DATE,NOT NULL,-,-,設置日
+created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時

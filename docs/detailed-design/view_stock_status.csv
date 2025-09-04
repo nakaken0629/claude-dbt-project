@@ -1,0 +1,8 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+vending_machine_id,VARCHAR,NOT NULL,-,-,自動販売機ID
+location_name,VARCHAR,NOT NULL,-,-,設置場所名
+product_id,VARCHAR,NOT NULL,-,-,商品ID
+product_name,VARCHAR,NOT NULL,-,-,商品名
+category_name,VARCHAR,NOT NULL,-,-,カテゴリ名
+current_stock,INTEGER,NOT NULL,-,0,現在在庫数
+last_replenishment_datetime,TIMESTAMP,NULL,-,-,最終補充日時

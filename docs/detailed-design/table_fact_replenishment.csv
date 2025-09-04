@@ -1,0 +1,10 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+replenishment_id,BIGINT,NOT NULL,PRIMARY KEY,-,補充ID（サロゲートキー）
+vending_machine_id,VARCHAR,NOT NULL,FOREIGN KEY,-,自動販売機ID
+product_id,VARCHAR,NOT NULL,FOREIGN KEY,-,商品ID
+replenishment_datetime,TIMESTAMP,NOT NULL,-,-,補充日時
+replenishment_quantity,INTEGER,NOT NULL,"CHECK (replenishment_quantity > 0)",-,補充数量
+stock_before,INTEGER,NULL,"CHECK (stock_before >= 0)",-,補充前在庫数
+stock_after,INTEGER,NULL,"CHECK (stock_after >= 0)",-,補充後在庫数
+staff_id,VARCHAR,NULL,FOREIGN KEY,-,補充担当者ID
+created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時

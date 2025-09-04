@@ -1,3 +1,0 @@
-ビュー名,ビュー種別,説明,主要な集計項目,結合テーブル
-view_sales_summary,集計ビュー,売上データのサマリ情報,売上件数・売上金額・投入金額・お釣り金額,"fact_sales, mst_vending_machine, mst_product, mst_product_category, mst_payment_method"
-view_stock_status,状況ビュー,最新の在庫状況,現在在庫数・最終補充日時,"fact_replenishment, mst_vending_machine, mst_product, mst_product_category"

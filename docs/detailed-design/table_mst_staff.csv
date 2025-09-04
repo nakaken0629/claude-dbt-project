@@ -1,0 +1,5 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+staff_id,VARCHAR,NOT NULL,PRIMARY KEY,-,担当者ID
+staff_name,VARCHAR,NOT NULL,-,-,担当者名
+created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時

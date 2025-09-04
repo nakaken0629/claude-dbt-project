@@ -1,0 +1,5 @@
+物理列名,データ型,NULL許可,制約,デフォルト値,説明
+payment_method_id,VARCHAR,NOT NULL,PRIMARY KEY,-,決済方法ID
+payment_method_name,VARCHAR,NOT NULL,UNIQUE,-,決済方法名
+created_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,作成日時
+updated_at,TIMESTAMP,NOT NULL,-,CURRENT_TIMESTAMP,更新日時
