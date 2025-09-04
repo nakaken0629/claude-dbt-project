@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: fact_sales
+    description: "売上ファクトテーブル"
+    columns:
+      - name: sales_id
+        description: "売上ID（サロゲートキー）"
+        tests:
+          - not_null
+          - unique
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mst_vending_machine')
+              field: vending_machine_id
+      - name: product_id
+        description: "商品ID" 
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mst_product')
+              field: product_id
+      - name: payment_method_id
+        description: "決済方法ID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mst_payment_method')
+              field: payment_method_id
+
+  - name: fact_replenishment
+    description: "補充ファクトテーブル"
+    columns:
+      - name: replenishment_id
+        description: "補充ID（サロゲートキー）"
+        tests:
+          - not_null
+          - unique
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mst_vending_machine')
+              field: vending_machine_id
+      - name: product_id
+        description: "商品ID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mst_product')
+              field: product_id
+      - name: staff_id
+        description: "担当者ID"
+        tests:
+          - relationships:
+              to: ref('mst_staff')
+              field: staff_id
+
+  - name: mst_vending_machine
+    description: "自動販売機マスタ"
+    columns:
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+          - unique
+
+  - name: mst_product_category
+    description: "商品カテゴリマスタ"
+    columns:
+      - name: product_category_id
+        description: "商品カテゴリID"
+        tests:
+          - not_null
+          - unique
+
+  - name: mst_product
+    description: "商品マスタ"
+    columns:
+      - name: product_id
+        description: "商品ID"
+        tests:
+          - not_null
+          - unique
+      - name: product_category_id
+        description: "商品カテゴリID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('mst_product_category')
+              field: product_category_id
+
+  - name: mst_staff
+    description: "担当者マスタ"
+    columns:
+      - name: staff_id
+        description: "担当者ID"
+        tests:
+          - not_null
+          - unique
+
+  - name: mst_payment_method
+    description: "決済方法マスタ"
+    columns:
+      - name: payment_method_id
+        description: "決済方法ID"
+        tests:
+          - not_null
+          - unique

@@ -1,0 +1,164 @@
+version: 2
+
+sources:
+  - name: vending_machine_raw
+    description: "自動販売機事業の生データソース"
+    tables:
+      # マスタデータ
+      - name: vending_machine_master
+        description: "自動販売機マスタデータ"
+        columns:
+          - name: id
+            description: "自動販売機を識別する一意ID（主キー）"
+            tests:
+              - not_null
+              - unique
+          - name: 設置場所
+            description: "自動販売機の設置場所"
+            tests:
+              - not_null
+          - name: 設置日
+            description: "自動販売機が設置された日付"
+            tests:
+              - not_null
+
+      - name: product_category_master
+        description: "商品カテゴリマスタデータ"
+        columns:
+          - name: id
+            description: "商品カテゴリを識別する一意ID（主キー）"
+            tests:
+              - not_null
+              - unique
+          - name: カテゴリ名
+            description: "商品カテゴリの名称"
+            tests:
+              - not_null
+
+      - name: product_master
+        description: "商品マスタデータ"
+        columns:
+          - name: id
+            description: "商品を識別する一意ID（主キー）"
+            tests:
+              - not_null
+              - unique
+          - name: 商品カテゴリid
+            description: "商品カテゴリの識別ID"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('vending_machine_raw', 'product_category_master')
+                  field: id
+          - name: 商品名
+            description: "商品の名称"
+            tests:
+              - not_null
+          - name: 値段
+            description: "商品の販売価格"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+
+      - name: staff_master
+        description: "担当者マスタデータ"
+        columns:
+          - name: id
+            description: "担当者を識別する一意ID（主キー）"
+            tests:
+              - not_null
+              - unique
+          - name: 担当者名
+            description: "担当者の氏名"
+            tests:
+              - not_null
+
+      - name: payment_method_master
+        description: "決済方法マスタデータ"
+        columns:
+          - name: id
+            description: "決済方法を識別する一意ID（主キー）"
+            tests:
+              - not_null
+              - unique
+          - name: 決済方法名
+            description: "決済方法の名称"
+            tests:
+              - not_null
+
+      # トランザクションデータ
+      - name: sales_data
+        description: "売上データ"
+        columns:
+          - name: 自動販売機id
+            description: "自動販売機を識別する一意ID"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('vending_machine_raw', 'vending_machine_master')
+                  field: id
+          - name: 商品id
+            description: "販売された商品の識別ID"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('vending_machine_raw', 'product_master')
+                  field: id
+          - name: 購入日時
+            description: "商品が購入された日時"
+            tests:
+              - not_null
+          - name: 決済方法id
+            description: "使用された決済方法の識別ID"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('vending_machine_raw', 'payment_method_master')
+                  field: id
+          - name: 投入金額
+            description: "顧客が投入した金額"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+          - name: お釣り
+            description: "顧客に返却されたお釣り金額"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+
+      - name: replenishment_records
+        description: "商品補充記録データ"
+        columns:
+          - name: 自動販売機id
+            description: "補充対象の自動販売機ID"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('vending_machine_raw', 'vending_machine_master')
+                  field: id
+          - name: 商品id
+            description: "補充した商品のID"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('vending_machine_raw', 'product_master')
+                  field: id
+          - name: 補充日時
+            description: "商品を補充した日時"
+            tests:
+              - not_null
+          - name: 補充数量
+            description: "補充した商品の個数"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 1
+          - name: 補充前在庫数
+            description: "補充作業前の在庫数量"
+          - name: 補充後在庫数
+            description: "補充作業後の在庫数量"
+          - name: 補充担当者id
+            description: "補充作業を行った担当者のID"
