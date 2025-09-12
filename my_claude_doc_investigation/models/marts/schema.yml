@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: sales_summary
+    description: "売上サマリビュー - 日別・自販機別・商品別・決済方法別の売上集計"
+    columns:
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+      - name: location_name
+        description: "設置場所名"
+        tests:
+          - not_null
+      - name: product_name
+        description: "商品名"
+        tests:
+          - not_null
+      - name: category_name
+        description: "カテゴリ名"
+        tests:
+          - not_null
+      - name: payment_method_name
+        description: "決済方法名"
+        tests:
+          - not_null
+      - name: purchase_date
+        description: "購入日"
+        tests:
+          - not_null
+      - name: sales_count
+        description: "売上件数"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_sales_amount
+        description: "売上金額合計"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_input_amount
+        description: "投入金額合計"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_change_amount
+        description: "お釣り金額合計"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+  - name: stock_status
+    description: "在庫状況ビュー - 自販機別・商品別の現在在庫数"
+    columns:
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+      - name: location_name
+        description: "設置場所名"
+        tests:
+          - not_null
+      - name: product_id
+        description: "商品ID"
+        tests:
+          - not_null
+      - name: product_name
+        description: "商品名"
+        tests:
+          - not_null
+      - name: category_name
+        description: "カテゴリ名"
+        tests:
+          - not_null
+      - name: current_stock
+        description: "現在在庫数"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
