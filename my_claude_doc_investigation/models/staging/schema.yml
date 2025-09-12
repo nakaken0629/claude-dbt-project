@@ -1,0 +1,209 @@
+version: 2
+
+models:
+  - name: stg_vending_machines
+    description: "自動販売機マスターのステージングモデル"
+    columns:
+      - name: vending_machine_id
+        description: "自動販売機ID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: location_name
+        description: "設置場所"
+        tests:
+          - not_null
+      - name: installation_date
+        description: "設置日"
+        tests:
+          - not_null
+
+  - name: stg_product_categories
+    description: "商品カテゴリマスターのステージングモデル"
+    columns:
+      - name: product_category_id
+        description: "商品カテゴリID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: category_name
+        description: "カテゴリ名"
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_products
+    description: "商品マスターのステージングモデル"
+    columns:
+      - name: product_id
+        description: "商品ID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: product_category_id
+        description: "商品カテゴリID（外部キー）"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_product_categories')
+              field: product_category_id
+      - name: product_name
+        description: "商品名"
+        tests:
+          - not_null
+      - name: price
+        description: "販売価格（円）"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: category_name
+        description: "カテゴリ名（結合済み）"
+        tests:
+          - not_null
+
+  - name: stg_staff
+    description: "スタッフマスターのステージングモデル"
+    columns:
+      - name: staff_id
+        description: "スタッフID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: staff_name
+        description: "スタッフ名"
+        tests:
+          - not_null
+
+  - name: stg_payment_methods
+    description: "決済方法マスターのステージングモデル"
+    columns:
+      - name: payment_method_id
+        description: "決済方法ID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: payment_method_name
+        description: "決済方法名"
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_sales
+    description: "売上ファクトのステージングモデル"
+    columns:
+      - name: sales_id
+        description: "売上ID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: vending_machine_id
+        description: "自動販売機ID（外部キー）"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_vending_machines')
+              field: vending_machine_id
+      - name: product_id
+        description: "商品ID（外部キー）"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: purchase_datetime
+        description: "購入日時"
+        tests:
+          - not_null
+      - name: purchase_date
+        description: "購入日"
+        tests:
+          - not_null
+      - name: payment_method_id
+        description: "決済方法ID（外部キー）"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_payment_methods')
+              field: payment_method_id
+      - name: input_amount
+        description: "投入金額（円）"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: change_amount
+        description: "お釣り金額（円）"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+  - name: stg_replenishments
+    description: "補充ファクトのステージングモデル"
+    columns:
+      - name: replenishment_id
+        description: "補充ID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: vending_machine_id
+        description: "自動販売機ID（外部キー）"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_vending_machines')
+              field: vending_machine_id
+      - name: product_id
+        description: "商品ID（外部キー）"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: replenishment_datetime
+        description: "補充日時"
+        tests:
+          - not_null
+      - name: replenishment_quantity
+        description: "補充数量"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+
+  - name: stg_data_quality_logs
+    description: "データ品質ログのステージングモデル"
+    columns:
+      - name: log_id
+        description: "ログID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: table_name
+        description: "テーブル名"
+        tests:
+          - not_null
+      - name: error_level
+        description: "エラーレベル"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['FATAL', 'ERROR', 'WARNING', 'INFO']
+
+  - name: stg_data_quality_metrics
+    description: "データ品質メトリクスのステージングモデル"
+    columns:
+      - name: metric_id
+        description: "メトリクスID（主キー）"
+        tests:
+          - not_null
+          - unique
+      - name: table_name
+        description: "テーブル名"
+        tests:
+          - not_null
+      - name: metric_name
+        description: "メトリクス名"
+        tests:
+          - not_null

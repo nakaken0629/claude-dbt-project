@@ -1,0 +1,164 @@
+version: 2
+
+models:
+  - name: sales_summary
+    description: "売上サマリビュー - 基本設計書のview_sales_summaryに対応"
+    columns:
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+      - name: location_name
+        description: "設置場所名"
+        tests:
+          - not_null
+      - name: product_name
+        description: "商品名"
+        tests:
+          - not_null
+      - name: category_name
+        description: "カテゴリ名"
+        tests:
+          - not_null
+      - name: payment_method_name
+        description: "決済方法名"
+        tests:
+          - not_null
+      - name: purchase_date
+        description: "購入日"
+        tests:
+          - not_null
+      - name: sales_count
+        description: "売上件数"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_sales_amount
+        description: "売上金額合計"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_input_amount
+        description: "投入金額合計"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_change_amount
+        description: "お釣り金額合計"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+  - name: stock_status
+    description: "在庫状況ビュー - 基本設計書のview_stock_statusに対応"
+    columns:
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+      - name: location_name
+        description: "設置場所名"
+        tests:
+          - not_null
+      - name: product_id
+        description: "商品ID"
+        tests:
+          - not_null
+      - name: product_name
+        description: "商品名"
+        tests:
+          - not_null
+      - name: category_name
+        description: "カテゴリ名"
+        tests:
+          - not_null
+      - name: current_stock
+        description: "現在在庫数"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+  - name: sales_performance_dashboard
+    description: "売上パフォーマンスダッシュボード用データマート"
+    columns:
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+      - name: product_id
+        description: "商品ID"
+        tests:
+          - not_null
+      - name: total_sales_count
+        description: "総売上件数"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_revenue
+        description: "総売上金額"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: sales_performance_tier
+        description: "売上パフォーマンス階層"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['High', 'Medium', 'Low']
+
+  - name: replenishment_insights
+    description: "補充業務インサイト用データマート"
+    columns:
+      - name: vending_machine_id
+        description: "自動販売機ID"
+        tests:
+          - not_null
+      - name: product_id
+        description: "商品ID"
+        tests:
+          - not_null
+      - name: replenishment_count
+        description: "補充回数"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: replenishment_efficiency
+        description: "補充効率分類"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['No Data', 'Efficient', 'Moderate', 'Frequent']
+
+  - name: data_quality_dashboard
+    description: "データ品質ダッシュボード用データマート"
+    columns:
+      - name: table_name
+        description: "テーブル名"
+        tests:
+          - not_null
+      - name: error_level
+        description: "エラーレベル"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['FATAL', 'ERROR', 'WARNING', 'INFO']
+      - name: error_count
+        description: "エラー件数"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: quality_status
+        description: "品質ステータス"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Critical', 'Poor', 'Needs Attention', 'Good']

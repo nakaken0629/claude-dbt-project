@@ -1,0 +1,357 @@
+version: 2
+
+sources:
+  - name: raw_vending_machine_data
+    description: "自動販売機システムの生データソース - stagingレイヤーに配置される全テーブル"
+    tables:
+      # マスターデータテーブル
+      - name: mst_vending_machine
+        description: "自動販売機マスター"
+        columns:
+          - name: vending_machine_id
+            description: "自動販売機ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
+          - name: location_name
+            description: "設置場所"
+            data_type: varchar
+            tests:
+              - not_null
+          - name: installation_date
+            description: "設置日"
+            data_type: date
+            tests:
+              - not_null
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+          - name: updated_at
+            description: "更新日時"
+            data_type: timestamp
+            tests:
+              - not_null
+
+      - name: mst_product_category
+        description: "商品カテゴリマスター"
+        columns:
+          - name: product_category_id
+            description: "商品カテゴリID"
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
+          - name: category_name
+            description: "カテゴリ名"
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+          - name: updated_at
+            description: "更新日時"
+            data_type: timestamp
+            tests:
+              - not_null
+
+      - name: mst_product
+        description: "商品マスター"
+        columns:
+          - name: product_id
+            description: "商品ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
+          - name: product_category_id
+            description: "商品カテゴリID"
+            data_type: varchar
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_vending_machine_data', 'mst_product_category')
+                  field: product_category_id
+          - name: product_name
+            description: "商品名"
+            data_type: varchar
+            tests:
+              - not_null
+          - name: price
+            description: "販売価格（円）"
+            data_type: decimal(10,0)
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+          - name: updated_at
+            description: "更新日時"
+            data_type: timestamp
+            tests:
+              - not_null
+
+      - name: mst_staff
+        description: "担当者マスター"
+        columns:
+          - name: staff_id
+            description: "担当者ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
+          - name: staff_name
+            description: "担当者名"
+            data_type: varchar
+            tests:
+              - not_null
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+          - name: updated_at
+            description: "更新日時"
+            data_type: timestamp
+            tests:
+              - not_null
+
+      - name: mst_payment_method
+        description: "決済方法マスター"
+        columns:
+          - name: payment_method_id
+            description: "決済方法ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
+          - name: payment_method_name
+            description: "決済方法名"
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+          - name: updated_at
+            description: "更新日時"
+            data_type: timestamp
+            tests:
+              - not_null
+
+      # ファクトテーブル
+      - name: fact_sales
+        description: "売上ファクトテーブル"
+        columns:
+          - name: sales_id
+            description: "売上ID（サロゲートキー）"
+            data_type: bigint
+            tests:
+              - not_null
+              - unique
+          - name: vending_machine_id
+            description: "自動販売機ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_vending_machine_data', 'mst_vending_machine')
+                  field: vending_machine_id
+          - name: product_id
+            description: "商品ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_vending_machine_data', 'mst_product')
+                  field: product_id
+          - name: purchase_datetime
+            description: "購入日時"
+            data_type: timestamp
+            tests:
+              - not_null
+          - name: payment_method_id
+            description: "決済方法ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_vending_machine_data', 'mst_payment_method')
+                  field: payment_method_id
+          - name: input_amount
+            description: "投入金額（円）"
+            data_type: decimal(10,0)
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+          - name: change_amount
+            description: "お釣り金額（円）"
+            data_type: decimal(10,0)
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+
+      - name: fact_replenishment
+        description: "商品補充ファクトテーブル"
+        columns:
+          - name: replenishment_id
+            description: "補充ID（サロゲートキー）"
+            data_type: bigint
+            tests:
+              - not_null
+              - unique
+          - name: vending_machine_id
+            description: "自動販売機ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_vending_machine_data', 'mst_vending_machine')
+                  field: vending_machine_id
+          - name: product_id
+            description: "商品ID"
+            data_type: varchar
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw_vending_machine_data', 'mst_product')
+                  field: product_id
+          - name: replenishment_datetime
+            description: "補充日時"
+            data_type: timestamp
+            tests:
+              - not_null
+          - name: replenishment_quantity
+            description: "補充数量"
+            data_type: integer
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 1
+          - name: stock_before
+            description: "補充前在庫数"
+            data_type: integer
+            tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
+          - name: stock_after
+            description: "補充後在庫数"
+            data_type: integer
+            tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
+          - name: staff_id
+            description: "補充担当者ID"
+            data_type: varchar
+            tests:
+              - relationships:
+                  to: source('raw_vending_machine_data', 'mst_staff')
+                  field: staff_id
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+
+      # データ品質管理テーブル
+      - name: log_data_quality
+        description: "データ品質ログテーブル"
+        columns:
+          - name: log_id
+            description: "ログID"
+            data_type: bigint
+            tests:
+              - not_null
+              - unique
+          - name: table_name
+            description: "テーブル名"
+            data_type: varchar
+            tests:
+              - not_null
+          - name: column_name
+            description: "カラム名"
+            data_type: varchar
+          - name: error_type
+            description: "エラー種別"
+            data_type: varchar
+            tests:
+              - not_null
+          - name: error_level
+            description: "エラーレベル"
+            data_type: varchar
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['FATAL', 'ERROR', 'WARNING', 'INFO']
+          - name: error_message
+            description: "エラーメッセージ"
+            data_type: varchar
+            tests:
+              - not_null
+          - name: source_data
+            description: "ソースデータ"
+            data_type: varchar
+          - name: record_count
+            description: "レコード件数"
+            data_type: integer
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+
+      - name: mst_data_quality_metrics
+        description: "データ品質メトリクスマスター"
+        columns:
+          - name: metric_id
+            description: "メトリクスID"
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
+          - name: table_name
+            description: "テーブル名"
+            data_type: varchar
+            tests:
+              - not_null
+          - name: metric_name
+            description: "メトリクス名"
+            data_type: varchar
+            tests:
+              - not_null
+          - name: metric_description
+            description: "メトリクス説明"
+            data_type: varchar
+          - name: threshold_value
+            description: "閾値"
+            data_type: decimal(10,4)
+          - name: created_at
+            description: "作成日時"
+            data_type: timestamp
+            tests:
+              - not_null
+          - name: updated_at
+            description: "更新日時"
+            data_type: timestamp
+            tests:
+              - not_null
